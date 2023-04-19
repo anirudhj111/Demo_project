@@ -5,7 +5,7 @@ import AddUserButton from '../components/adduserbutton';
 import UserCard from '../components/usercard';
 const { height, width } = Dimensions.get('window')
 
-const Friends = () => {
+const Friends = ({navigation}) => {
 
     const [userList, setUserList] = useState([]);
 
@@ -20,7 +20,6 @@ const Friends = () => {
         })
         .then((res) => {
             setUserList(res.data);
-            console.log(res.data.length);
         })
         .catch((err) => {
             console.log("err",err);
@@ -31,7 +30,7 @@ const Friends = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={{color:'#000', fontSize:height*0.04}}>Friends</Text>
-                <AddUserButton/>
+                <AddUserButton onPress={() => {navigation.navigate('NewFriend')}}/>
             </View>
             <View style={styles.listContainer}>
                 <FlatList 
@@ -40,7 +39,9 @@ const Friends = () => {
                         return(
                             <UserCard 
                                 name={item.First_Name__c + " " + item.Last_Name__c}
-                                age={item.Age__c}/>
+                                age={item.Age__c}
+                                onPress={() => {navigation.navigate('Details')}}
+                            />
                         )
                     }}/>
             </View>
@@ -65,12 +66,12 @@ const styles = new StyleSheet.create({
         alignItems:'center',
         marginVertical:'2.5%',
         alignSelf:'center',
-        height:height*0.075,
+        height:height*0.065,
     },
 
     listContainer : {
         width:'95%',
         alignSelf:'center',
-        height:height*0.8
+        height:height*0.85
     }
 })

@@ -2,13 +2,29 @@ import React from "react";
 import {Text, View,Image,Dimensions,StyleSheet} from'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/home";
 import Friends from "../screens/friends";
 import Settings from "../screens/settings";
+import CreateUser from "../screens/createuser";
+import UserDetails from "../screens/userdetails";
+import 'react-native-gesture-handler'
 const {height, width } = Dimensions.get('window');
 
-const BottomTabNavigator = createBottomTabNavigator();
 
+const FriendsStackNavigator = createStackNavigator();
+const FriendsStack = () => {
+    return(
+        <FriendsStackNavigator.Navigator>
+            <FriendsStackNavigator.Screen name="Friends" component={Friends} options={{headerShown:false}}/>
+            <FriendsStackNavigator.Screen name="NewFriend" component={CreateUser} options={{headerShown:false}}/>
+            <FriendsStackNavigator.Screen name="Details" component={UserDetails} options={{headerShown:false}}/>
+        </FriendsStackNavigator.Navigator>
+    )
+    
+}
+
+const BottomTabNavigator = createBottomTabNavigator();
 const BottomTab = () => {
     return(
         <BottomTabNavigator.Navigator 
@@ -28,7 +44,7 @@ const BottomTab = () => {
                         )
                     }
                 }}/>
-            <BottomTabNavigator.Screen name="Friends" component={Friends} 
+            <BottomTabNavigator.Screen name="FriendsStack" component={FriendsStack} 
                 options={{
                     tabBarIcon:({focused}) => {
                         return(

@@ -2,9 +2,9 @@ import React from "react";
 import { View, TouchableOpacity, Text, Dimensions,StyleSheet} from "react-native";
 const { height, width } = Dimensions.get('window');
 
-const UserCard = ({style, name, age}) => {
+const UserCard = ({style, name, age, onPress}) => {
     return(
-        <TouchableOpacity style={[styles.card,style]}>
+        <TouchableOpacity onPress={onPress} style={[styles.card,style]}>
             <Text>{name}</Text>
             <Text>{age}</Text>
         </TouchableOpacity> 

@@ -6,7 +6,7 @@ const AddUserButton = ({onPress}) => {
     return(
         <TouchableOpacity onPress={onPress} style={styles.button} >
             <Image style={{height: height*0.02, width: height*0.02,tintColor:'#fff'}} source={require('../../assets/add.png')} />
-            <Text style={{fontSize : height*0.0175, color:'#fff'}}>Add Friend</Text>
+            <Text style={{fontSize : height*0.0175, color:'#fff'}}>New Friend</Text>
         </TouchableOpacity>
     )
 }
