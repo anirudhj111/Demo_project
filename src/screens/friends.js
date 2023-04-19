@@ -40,7 +40,7 @@ const Friends = ({navigation}) => {
                             <UserCard 
                                 name={item.First_Name__c + " " + item.Last_Name__c}
                                 age={item.Age__c}
-                                onPress={() => {navigation.navigate('Details')}}
+                                onPress={() => {navigation.navigate('Details',{ "item" : item })}}
                             />
                         )
                     }}/>
