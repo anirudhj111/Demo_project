@@ -17,7 +17,7 @@ const styles = new StyleSheet.create({
     button : {
         display:'flex',
         flexDirection:'row',
-        height: height*0.05,
+        height: height*0.045,
         width: width*0.3,
         backgroundColor:'#ababab',
         justifyContent:'space-evenly',
