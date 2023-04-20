@@ -47,3 +47,6 @@ react-native run-android
 3. react-native-image-picker for accessing gallery and camera
 
 
+URL for testing deeplink : https://navtech.io/4012-2/
+
+
