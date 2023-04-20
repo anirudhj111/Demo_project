@@ -46,7 +46,9 @@ react-native run-android
 2. React Navigation for navigation
 3. react-native-image-picker for accessing gallery and camera
 
-
+## Testing Deeplink
+We have used a sample user to test the deeplink functionality , the url will contain a link , which will redirect to the user details screen in the app.
+Pre-requisite : Install the App before testing the linl
 URL for testing deeplink : https://navtech.io/4012-2/
 
 
