@@ -31,30 +31,17 @@ const CreateUser = ({navigation}) => {
             "Age__c": age
         }
 
-        console.log("rere", newFriend)
+        let newFriendList = [];
+        newFriendList = [newFriend, ...newFriendList];
         try{
-            const value = await AsyncStorage.getItem('@userlist')
-             if(value !== null) {
-                let obj = JSON.parse(value);
-                console.log("push1", obj.length)
-                try{
-                    let newList = [newFriend, ...obj]
-                    await AsyncStorage.setItem('@userlist', JSON.stringify(newList));
-                    console.log("user added");
-                    console.log("push2", newList.length)
-                    navigation.pop()
-                }
-                catch(e1){
-                    console.log("err1",e1)
-                }
-             }
+            await AsyncStorage.setItem('@newusers', JSON.stringify(newFriendList));
+            console.log("user added");
+            console.log("push2", newFriendList.length)
+            navigation.pop()
         }
-        catch (e){
+        catch(e1){
             console.log("err",e)
-        }
-
-
-        
+        }        
 
     }
     return(

@@ -4,6 +4,7 @@ import AddUserButton from '../components/adduserbutton';
 import UserCard from '../components/usercard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/core';
+import axios from 'axios';
 const { height, width } = Dimensions.get('window')
 
 const Friends = ({navigation}) => {
@@ -13,17 +14,23 @@ const Friends = ({navigation}) => {
 
     useEffect(() => {
         getUserData();
-        AddNewFriends();
+        // AddNewFriends();
     },[isFocused])
 
     const getUserData = async() => {
         try{
             const value = await AsyncStorage.getItem('@userlist')
+            const newUsers = await AsyncStorage.getItem('@newusers')
              if(value !== null) {
                 let obj = JSON.parse(value);
-                setUserList(obj)
-                setIsLoaded(true)
-                console.log("length1", obj.length)
+                if(newUsers){
+                    let newUserObj = JSON.parse(newUsers);
+                    let newUserList = [...newUserObj, ...obj];
+                    setUserList(newUserList);
+                }
+                else{
+                    setUserList(obj);
+                }
              }
              else{
                 getUserData()
@@ -34,18 +41,27 @@ const Friends = ({navigation}) => {
         }
     }
     
-    const AddNewFriends = () => {
-        axios({
-            url:`https://rnapp-mock-developer-edition.ap24.force.com/services/apexrest/apiservice`,
-            method:'GET',
-        })
-        .then((res) => {
-            let apiList = res.data;
-            
-        })
-        .catch((err) => {
-            console.log("err",err);
-        })
+    const AddNewFriends = async() => {
+        try{
+            const newUsers = await AsyncStorage.getItem('@newusers');
+            let obj = [];
+            obj = JSON.parse(newUsers);
+
+            axios({
+                url:`https://rnapp-mock-developer-edition.ap24.force.com/services/apexrest/apiservice`,
+                method:'POST',
+                data:obj
+            }).then(async(res) => {
+                console.log("new users updated");
+                await AsyncStorage.setItem('@newusers',null);
+                console.log("cleared local");
+            }).catch((err) => {
+                console.log("update users error",err)
+            })
+        }
+        catch(e){
+            console.log("err",e);
+        }
     }
 
     return(
