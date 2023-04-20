@@ -1,13 +1,55 @@
 import React, { useState, useEffect, useCallback} from 'react'
-import { Text, View, Dimensions, TouchableOpacity, StyleSheet, Image, Modal} from 'react-native';
+import { Text, View, Dimensions, TouchableOpacity, StyleSheet, Image, Modal, Linking,ActivityIndicator} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
+import { removeAllListeners } from 'process';
 const { height, width} = Dimensions.get('window')
 
-const Home = () => {
+const Home = ({navigation}) => {
 
     const [image, setImage] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [pickerResponse, setPickerResponse] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        Linking.addEventListener('url', handleDeepLink());
+        return () => {
+            Linking.removeEventListener('url',null);
+        } 
+    },[])
+
+    const handleDeepLink = () => {
+        setIsLoaded(true);
+        Linking.getInitialURL().then((url) => {
+         console.log("url",url)
+         let url1;
+         if(url){
+            url1 = url.split('/')
+            redirectToDetails(url1[3]);
+         }
+        });
+      };
+
+
+    const redirectToDetails = async(id) => {
+        axios({
+          url:`https://rnapp-mock-developer-edition.ap24.force.com/services/apexrest/apiservice`,
+          method:'GET',
+        })
+        .then((res) => {
+            res.data.map((item) => {
+                if(item.Name == id){
+                  console.log("id found")
+                  setIsLoaded(false)
+                  navigation.navigate('FriendsStack',{screen:'Details',params : {"item" : item }},)
+              }
+            })
+        })
+        .catch((err) => {
+            console.log("err",err);
+        })
+    }
 
     const onImageLibraryPress = useCallback(() => {
         const options = {
@@ -26,6 +68,14 @@ const Home = () => {
         };
         launchCamera(options, setPickerResponse);
     }, []);
+
+    if(isLoaded){
+        return(
+            <View style={{height:'100%', width:'100%', flexDirection:'row', justifyContent:'center',alignItems:'center'}}>
+                <ActivityIndicator size={"large"} color={"#1a4c9c"} />
+            </View>
+        )
+    }
 
     return(
         <View style={{flex:1, flexDirection:'column',justifyContent:'center',alignItems:'center', backgroundColor:'#fff'}}>

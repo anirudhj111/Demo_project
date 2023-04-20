@@ -70,9 +70,9 @@ const BottomTab = () => {
     )
 }
 
-const AppNavigator = ({linking}) => {
+const AppNavigator = ({linking,ref}) => {
     return(
-        <NavigationContainer linking={linking}>
+        <NavigationContainer ref={ref} linking={linking}>
             <BottomTab/>
         </NavigationContainer>
     )

@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import CommonHeader from "../components/commonheader";
 
 const UserDetails = ({route, navigation}) => {
-
+    console.log(route.params)
     const {item} = route.params
     return(
         <View style={styles.container}>
-            <CommonHeader onPress={() => {navigation.pop()}} title={"Friend Details"} />
+            <CommonHeader onPress={() => {navigation.navigate('Friends')}} title={"Friend Details"} />
             <View style={styles.detailContainer}>
                 <View style={{display:'flex', flexDirection:'row'}}>
                     <Text>First Name: </Text>
