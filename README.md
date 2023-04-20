@@ -15,11 +15,14 @@ git clone < project-url.git >
 - Launch ``` yarn ``` command in a terminal opened in the project folder.
 > This command will look into the *package.json* file and install all the dependencies listed here.
 
-- Install react-native-cli globally on your computer
+- Installing packages
 ```
-yarn global add react-native-cli
+npm install
 ```
-
+- To Start the project and Initialize metro
+```
+npm start
+```
 ### Android steps
 
 - Launch a virtual android device [(through *Android Studio* for instance)](https://developer.android.com/studio/run/managing-avds.html#viewing)
