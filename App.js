@@ -14,6 +14,7 @@ import {
   Text,
   useColorScheme,
   View,
+  Linking
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppNavigator from './src/utils/navigation';
@@ -24,7 +25,18 @@ function App(){
 
   useEffect(() => {
     getUserData()
+    Linking.addEventListener('url', handleDeepLink());
   },[])
+
+  const handleDeepLink = (event) => {
+    console.log("event", event)
+    Linking.getInitialURL().then((url) => {
+      console.log("url",url)
+      if (url && url.match(/www.google.com/)) {
+        Navigation.navigate('Home');
+      }
+    });
+  };
 
   const getUserData = () => {
     axios({
@@ -53,7 +65,7 @@ function App(){
   }
 
   return (
-    <AppNavigator/>
+    <AppNavigator linking={Linking}/>
   );
 }
 

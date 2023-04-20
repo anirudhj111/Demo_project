@@ -10,7 +10,7 @@ const { height, width } = Dimensions.get('window')
 const Friends = ({navigation}) => {
     let isFocused = useIsFocused()
     const [userList, setUserList] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         getUserData();

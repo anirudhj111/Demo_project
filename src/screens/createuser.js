@@ -17,7 +17,6 @@ const CreateUser = ({navigation}) => {
     }
 
     const AddNewFriend = async() => {
-       
         let randomId = Math.floor(Math.random() * 10000);
         let id = `FR-0${randomId}`;
 
@@ -35,14 +34,11 @@ const CreateUser = ({navigation}) => {
         newFriendList = [newFriend, ...newFriendList];
         try{
             await AsyncStorage.setItem('@newusers', JSON.stringify(newFriendList));
-            console.log("user added");
-            console.log("push2", newFriendList.length)
             navigation.pop()
         }
         catch(e1){
             console.log("err",e)
         }        
-
     }
     return(
         <View style={{flex:1}}>
