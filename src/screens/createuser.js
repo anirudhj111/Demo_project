@@ -50,6 +50,7 @@ const CreateUser = ({navigation}) => {
                         <TextInput 
                             placeholder="Enter First Name"
                             value={firstName}
+                            style={{color:'#000'}}
                             placeholderTextColor="#c7c7c7"
                             onChangeText={(value) => {setFirstName(value)}}
                         />
@@ -61,6 +62,7 @@ const CreateUser = ({navigation}) => {
                         <TextInput
                             placeholder="Enter Last Name"
                             value={lastName}
+                            style={{color:'#000'}}
                             placeholderTextColor="#c7c7c7"
                             onChangeText={(value) => {setLastName(value)}}
                         />
@@ -74,6 +76,7 @@ const CreateUser = ({navigation}) => {
                             value={`${age}`}
                             placeholderTextColor="#c7c7c7"
                             keyboardType={'number-pad'}
+                            style={{color:'#000'}}
                             onChangeText={(value) => {setAge(value)}}
                         />
                     </View>
