@@ -18,7 +18,6 @@ const Home = () => {
         launchImageLibrary(options, setPickerResponse);
     }, []);
 
-
     const onCameraPress = useCallback(() => {
         const options = {
           saveToPhotos: true,
@@ -28,15 +27,11 @@ const Home = () => {
         launchCamera(options, setPickerResponse);
     }, []);
 
-
-
-    
-
     return(
         <View style={{flex:1, flexDirection:'column',justifyContent:'center',alignItems:'center', backgroundColor:'#fff'}}>
             <View style={styles.imageContainer}>
             {
-                pickerResponse ? 
+                pickerResponse?.assets ? 
                     <View style={{width:'100%',height:'100%'}}>
                             <Image style={{height:'100%', width:'100%'}} source={{uri:pickerResponse?.assets && pickerResponse.assets[0].uri}}/>
                     </View>
@@ -55,30 +50,37 @@ const Home = () => {
                     <Text style={{color:'#fff'}}>Camera + Gallery</Text>
                 </TouchableOpacity>
             </View>
-
+            <TouchableOpacity onPress={() => {setPickerResponse(null)}} style={{width:width*0.35, height:height*0.045, justifyContent:'center',alignItems:'center', borderWidth:1, borderColor:'#6134eb'}}>
+                <Text style={{color:'#6134eb'}}>Clear</Text>
+            </TouchableOpacity>
                 <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
                 >
                     <View onPress={() => {Keyboard.dismiss();setModalVisible(!modalVisible)}} style={styles.centeredView}>
-                        <View style={{height : height*0.3, width: width*0.6, backgroundColor:'#fff', padding:16}}>
+                        <View style={{width: width*0.6, backgroundColor:'#fff', padding:height*0.025}}>
                             <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
                                 <Text style={{fontSize:height*0.025, color:'#000'}}>Select</Text>
-                                <TouchableOpacity onPress={() => {setModalVisible(!modalVisible)}}>
+                                <TouchableOpacity style={{padding:8}} onPress={() => {setModalVisible(!modalVisible)}}>
                                     <Image style={{height:height*0.0125, width:height*0.0125}} source={require('../../assets/close.png')} />
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity onPress={() => {onCameraPress();setModalVisible(!modalVisible)}} style={{marginTop:'5%'}}>
-                                <Text style={{fontSize:height*0.025, color:'#000'}}>Camera</Text>
+                            <TouchableOpacity onPress={() => {onCameraPress();setModalVisible(!modalVisible)}} style={{marginTop:'7%'}}>
+                                <View style={styles.selectOption}>  
+                                    <Image source={require('../../assets/camera.png')} style={{height:height*0.025, width: height*0.025}}/>
+                                    <Text style={{fontSize:height*0.02, color:'#000',marginHorizontal:'5%'}}>Camera</Text>
+                                </View>
                             </TouchableOpacity>
-                            <TouchableOpacity  onPress={() => {onImageLibraryPress();setModalVisible(!modalVisible)}} style={{marginTop:'2.5%'}}>
-                                <Text style={{fontSize:height*0.025, color:'#000'}}>Gallery</Text>
+                            <TouchableOpacity  onPress={() => {onImageLibraryPress();setModalVisible(!modalVisible)}} style={{marginTop:'5%'}}>
+                                <View style={styles.selectOption}>  
+                                    <Image source={require('../../assets/gallery.png')} style={{height:height*0.025, width: height*0.025}}/>
+                                    <Text style={{fontSize:height*0.02, color:'#000',marginHorizontal:'5%'}}>Gallery</Text>
+                                </View>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </Modal>
-            
         </View>
     )
 }
@@ -108,4 +110,14 @@ const styles = new StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
+
+    selectOption : {
+        display:'flex', 
+        flexDirection:'row',
+        padding:8, 
+        alignItems:'center', 
+        borderWidth:0.5,
+        borderColor:'#c7c7c7', 
+        borderRadius:4
+    }
 })
