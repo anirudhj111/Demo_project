@@ -75,6 +75,7 @@ const Friends = ({navigation}) => {
                         ListFooterComponent={() => {
                             <View style={{marginBottom:'25%'}}/>
                         }}
+                        keyExtractor={(item,key) => item}
                         renderItem={({item,key}) => {
                             return(
                                 <UserCard 

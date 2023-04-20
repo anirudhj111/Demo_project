@@ -4,7 +4,6 @@ import CommonHeader from "../components/commonheader";
 const { height, width } = Dimensions.get('window');
 
 const UserDetails = ({route, navigation}) => {
-    console.log(route.params)
     const {item} = route.params
     return(
         <View style={styles.container}>
