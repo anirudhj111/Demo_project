@@ -14,13 +14,12 @@ const Home = ({navigation}) => {
 
     useEffect(() => {
         Linking.addEventListener('url', handleDeepLink());
-        return () => {
-            Linking.removeEventListener('url',null);
-        } 
+        // return () => {
+        //     Linking.removeEventListener('url',null);
+        // } 
     },[])
 
     const handleDeepLink = () => {
-        setIsLoaded(true);
         Linking.getInitialURL().then((url) => {
          console.log("url",url)
          let url1;
@@ -33,6 +32,7 @@ const Home = ({navigation}) => {
 
 
     const redirectToDetails = async(id) => {
+        setIsLoaded(true);
         axios({
           url:`https://rnapp-mock-developer-edition.ap24.force.com/services/apexrest/apiservice`,
           method:'GET',
@@ -83,7 +83,10 @@ const Home = ({navigation}) => {
             {
                 pickerResponse?.assets ? 
                     <View style={{width:'100%',height:'100%'}}>
-                            <Image style={{height:'100%', width:'100%'}} source={{uri:pickerResponse?.assets && pickerResponse.assets[0].uri}}/>
+                        <TouchableOpacity style={{padding:8, position:'absolute',right:0, zIndex:2}} onPress={() => {setPickerResponse(null)}}>
+                            <Image style={{height:height*0.0125, width:height*0.0125}} source={require('../../assets/close.png')} />
+                        </TouchableOpacity>
+                        <Image style={{height:'100%', width:'100%'}} source={{uri:pickerResponse?.assets && pickerResponse.assets[0].uri}}/>
                     </View>
                 :
                     <View style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
@@ -93,16 +96,13 @@ const Home = ({navigation}) => {
             }
             </View>
             <View style={{display:'flex', flexDirection:'row', justifyContent:'space-between',width:'80%',marginVertical:'2.5%'}}>
-                <TouchableOpacity onPress={() => {onCameraPress()}} style={{width:width*0.35, height:height*0.05, justifyContent:'center',alignItems:'center', backgroundColor:'#6134eb'}}>
+                <TouchableOpacity onPress={() => {onCameraPress()}} style={styles.buttonStyle}>
                     <Text style={{color:'#fff'}}>Camera</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {setModalVisible(!modalVisible)}} style={{width:width*0.35, height:height*0.05, justifyContent:'center',alignItems:'center', backgroundColor:'#6134eb'}}>
+                <TouchableOpacity onPress={() => {setModalVisible(!modalVisible)}} style={styles.buttonStyle}>
                     <Text style={{color:'#fff'}}>Camera + Gallery</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => {setPickerResponse(null)}} style={{width:width*0.35, height:height*0.045, justifyContent:'center',alignItems:'center', borderWidth:1, borderColor:'#6134eb'}}>
-                <Text style={{color:'#6134eb'}}>Clear</Text>
-            </TouchableOpacity>
                 <Modal
                 animationType="slide"
                 transparent={true}
@@ -169,5 +169,13 @@ const styles = new StyleSheet.create({
         borderWidth:0.5,
         borderColor:'#c7c7c7', 
         borderRadius:4
+    },
+
+    buttonStyle : {
+        width:width*0.35, 
+        height:height*0.05, 
+        justifyContent:'center',
+        alignItems:'center', 
+        backgroundColor:'#2f4894'
     }
 })
