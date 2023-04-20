@@ -13,7 +13,6 @@ const Home = ({navigation}) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        console.log("called1")
         Linking.addEventListener('url', ({url}) => {handleDeepLink(url);console.log("called")});
     },[])
 
