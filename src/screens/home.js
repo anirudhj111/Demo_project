@@ -8,7 +8,6 @@ const { height, width} = Dimensions.get('window')
 
 const Home = ({navigation}) => {
 
-    const [image, setImage] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [pickerResponse, setPickerResponse] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
