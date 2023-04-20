@@ -1,7 +1,7 @@
 import React ,{useState, useEffect}from "react";
 import { View, Text, TouchableOpacity, Dimensions, StyleSheet, TextInput} from "react-native";
-import axios from "axios";
 import CommonHeader from "../components/commonheader";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window')
 
 const CreateUser = ({navigation}) => {
@@ -16,28 +16,46 @@ const CreateUser = ({navigation}) => {
         setAge(null);
     }
 
-    const CreateUser = () => {
-        let body = [
-            {
-                "attributes" : {
-                    "type" : "Friend__c"
-                },
-                "Name" : "FR-00999",
-                "First_Name__c": firstName,
-                "Last_Name__c": lastName,
-                "Age__c": age
-            }
-        ]
+    const AddNewFriend = async() => {
+       
+        let randomId = Math.floor(Math.random() * 10000);
+        let id = `FR-0${randomId}`;
 
-        axios({
-            url : `https://rnapp-mock-developer-edition.ap24.force.com/services/apexrest/apiservice`,
-            method : 'POST',
-            body : body
-        }).then((res) => {
-            console.log("resda", res.data)
-        }).catch((err) => {
-            console.log("err",err)
-        })
+        let newFriend = {
+            "attributes" : {
+                "type" : "Friend__c"
+            },
+            "Name" : id,
+            "First_Name__c": firstName,
+            "Last_Name__c": lastName,
+            "Age__c": age
+        }
+
+        console.log("rere", newFriend)
+        try{
+            const value = await AsyncStorage.getItem('@userlist')
+             if(value !== null) {
+                let obj = JSON.parse(value);
+                console.log("push1", obj.length)
+                try{
+                    let newList = [newFriend, ...obj]
+                    await AsyncStorage.setItem('@userlist', JSON.stringify(newList));
+                    console.log("user added");
+                    console.log("push2", newList.length)
+                    navigation.pop()
+                }
+                catch(e1){
+                    console.log("err1",e1)
+                }
+             }
+        }
+        catch (e){
+            console.log("err",e)
+        }
+
+
+        
+
     }
     return(
         <View style={{flex:1}}>
@@ -78,7 +96,7 @@ const CreateUser = ({navigation}) => {
                     <TouchableOpacity onPress={() => {onClear()}} style={{borderWidth:1, borderColor:'#d92b3d',paddingVertical:8, paddingHorizontal:12,marginHorizontal:'2.5%', borderRadius:4}}>
                         <Text style={{color:'#d92b3d', fontSize:height*0.0175}}>Clear</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor:'#28458a',paddingVertical:8, paddingHorizontal:12, borderRadius:4}}>
+                    <TouchableOpacity onPress={() => {AddNewFriend()}} style={{backgroundColor:'#28458a',paddingVertical:8, paddingHorizontal:12, borderRadius:4}}>
                         <Text style={{color:'#fff', fontSize:height*0.0175}}>Add</Text>
                     </TouchableOpacity>
                 </View> 

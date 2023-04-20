@@ -1,25 +1,47 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, FlatList, Dimensions} from 'react-native'
-import axios from 'axios';
+import { Text, View, StyleSheet, FlatList, Dimensions,ActivityIndicator} from 'react-native'
 import AddUserButton from '../components/adduserbutton';
 import UserCard from '../components/usercard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/core';
 const { height, width } = Dimensions.get('window')
 
 const Friends = ({navigation}) => {
-
+    let isFocused = useIsFocused()
     const [userList, setUserList] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
-        getUserData()
-    },[])
+        getUserData();
+        AddNewFriends();
+    },[isFocused])
 
-    const getUserData = () => {
+    const getUserData = async() => {
+        try{
+            const value = await AsyncStorage.getItem('@userlist')
+             if(value !== null) {
+                let obj = JSON.parse(value);
+                setUserList(obj)
+                setIsLoaded(true)
+                console.log("length1", obj.length)
+             }
+             else{
+                getUserData()
+             }
+        }
+        catch (e){
+            console.log("err",e)
+        }
+    }
+    
+    const AddNewFriends = () => {
         axios({
             url:`https://rnapp-mock-developer-edition.ap24.force.com/services/apexrest/apiservice`,
             method:'GET',
         })
         .then((res) => {
-            setUserList(res.data);
+            let apiList = res.data;
+            
         })
         .catch((err) => {
             console.log("err",err);
@@ -32,19 +54,29 @@ const Friends = ({navigation}) => {
                 <Text style={{color:'#000', fontSize:height*0.04}}>Friends</Text>
                 <AddUserButton onPress={() => {navigation.navigate('NewFriend')}}/>
             </View>
-            <View style={styles.listContainer}>
-                <FlatList 
-                    data={userList}
-                    renderItem={({item,key}) => {
-                        return(
-                            <UserCard 
-                                name={item.First_Name__c + " " + item.Last_Name__c}
-                                age={item.Age__c}
-                                onPress={() => {navigation.navigate('Details',{ "item" : item })}}
-                            />
-                        )
+            {  
+                isLoaded ?
+                <View style={styles.listContainer}>
+                    <FlatList 
+                        data={userList}
+                        ListFooterComponent={() => {
+                            <View style={{marginBottom:'25%'}}/>
+                        }}
+                        renderItem={({item,key}) => {
+                            return(
+                                <UserCard 
+                                    name={item.First_Name__c + " " + item.Last_Name__c}
+                                    age={item.Age__c}
+                                    onPress={() => {navigation.navigate('Details',{ "item" : item })}}
+                                />
+                            )
                     }}/>
-            </View>
+                </View>
+                :
+                <View style={{flex:1, display:'flex', justifyContent:'center', alignItems:'center'}}>
+                    <ActivityIndicator size={'large'} color={'#2643ad'} />
+                </View>
+            }
         </View>
     )
 }
@@ -73,6 +105,6 @@ const styles = new StyleSheet.create({
     listContainer : {
         width:'95%',
         alignSelf:'center',
-        height:height*0.85
+        height:height*0.83
     }
 })
