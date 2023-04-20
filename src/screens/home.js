@@ -3,6 +3,7 @@ import { Text, View, Dimensions, TouchableOpacity, StyleSheet, Image, Modal, Lin
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 import { removeAllListeners } from 'process';
+import { type } from 'os';
 const { height, width} = Dimensions.get('window')
 
 const Home = ({navigation}) => {
@@ -13,22 +14,34 @@ const Home = ({navigation}) => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        Linking.addEventListener('url', handleDeepLink());
-        // return () => {
-        //     Linking.removeEventListener('url',null);
-        // } 
+        console.log("called1")
+        Linking.addEventListener('url', ({url}) => {handleDeepLink(url);console.log("called")});
     },[])
 
-    const handleDeepLink = () => {
+    useEffect(() => {
         Linking.getInitialURL().then((url) => {
-         console.log("url",url)
-         let url1;
-         if(url){
-            url1 = url.split('/')
-            redirectToDetails(url1[3]);
-         }
+            let urlSplit;
+            if(url){
+                urlSplit = url.split('/')
+                redirectToDetails(urlSplit[3]);
+            }
+        })
+        .catch(err => {
+            console.warn('Deeplinking error', err)
         });
-      };
+    },[])
+
+
+    // 
+
+    const handleDeepLink = (urlOpen) => {
+        console.log(urlOpen)
+        let urlSplit;
+        if(urlOpen){
+            urlSplit = urlOpen.split('/')
+            redirectToDetails(urlSplit[3]);
+        }
+    };
 
 
     const redirectToDetails = async(id) => {
