@@ -4,7 +4,7 @@ import { Text, View } from 'react-native'
 const Settings = () => {
     return(
         <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fff'}}>
-            <Text>Settings</Text>
+            <Text style={{color:"#000"}}>Settings</Text>
         </View>
     )
 }

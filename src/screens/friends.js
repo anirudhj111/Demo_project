@@ -51,9 +51,7 @@ const Friends = ({navigation}) => {
                 method:'POST',
                 data:obj
             }).then(async(res) => {
-                console.log("new users updated");
                 await AsyncStorage.setItem('@newusers',null);
-                console.log("cleared local");
             }).catch((err) => {
                 console.log("update users error",err)
             })

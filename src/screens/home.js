@@ -62,7 +62,7 @@ const Home = ({navigation}) => {
 
     const onCameraPress = useCallback(() => {
         const options = {
-          saveToPhotos: true,
+          saveToPhotos: false,
           mediaType: 'photo',
           includeBase64: false,
         };
